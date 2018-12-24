@@ -1,29 +1,4 @@
-const cardBoard = document.querySelector('#cardboard');
-const images = [
-  'image1.svg',
-  'image2.svg',
-  'image3.svg',
-  'image4.svg',
-  'image5.svg',
-  'image6.svg',
-  'image7.svg',
-  'image8.svg',
-];
-
-let cardHTML = '';
-
-images.forEach(img => {
-  cardHTML += `
-    <div class="memory-card" data-card="${img}">
-      <img class="front-face" src="../../resource/images/${img}">
-      <img class="back-face" src="../../resource/images/puzzle.svg">
-    </div>
-  `
-});
-
-cardBoard.innerHTML = cardHTML + cardHTML;
-
-// fim renderização
+'user strict'
 
 const cards = document.querySelectorAll('.memory-card');
 let firstCard, secondCard;
@@ -33,6 +8,7 @@ function flipCard() {
   if (lockCard) return false;
 
   this.classList.add("flip");
+
 
   if (!firstCard) {
     firstCard = this;
@@ -46,19 +22,44 @@ function flipCard() {
 function checkForMatch() {
   let isMath = firstCard.dataset.card === secondCard.dataset.card;
 
-  !isMath ? disableCards() : resetCards(isMath);
+  if (!isMath) {
+    disableCards();
+  } else {
+    resetCards(isMath);
+  }
+}
+
+function addBorderCorrect() {
+  lockCard = true;
+  firstCard.classList.add("borderCorrect");
+  secondCard.classList.add("borderCorrect");
+}
+
+function addBorderError() {
+  lockCard = true;
+  firstCard.classList.add("borderError");
+  secondCard.classList.add("borderError");
+}
+
+function removeBorderError() {
+  lockCard = true;
+  firstCard.classList.remove("borderError");
+  secondCard.classList.remove("borderError");
 }
 
 function disableCards() {
   lockCard = true;
 
+  addBorderError();
+
   setTimeout(() => {
 
     firstCard.classList.remove("flip");
     secondCard.classList.remove("flip");
+    removeBorderError();
 
     resetCards();
-  }, 1500);
+  }, 1000);
 }
 
 (function shuffle() {
@@ -70,6 +71,7 @@ function disableCards() {
 
 function resetCards(isMath = false) {
   if (isMath) {
+    addBorderCorrect();
     firstCard.removeEventListener('click', flipCard);  
     secondCard.removeEventListener('click', flipCard);  
   } 
@@ -78,3 +80,9 @@ function resetCards(isMath = false) {
 }
 
 cards.forEach(card => card.addEventListener('click', flipCard));
+
+// 
+
+function reloadPage() {
+  window.location.reload();
+}
