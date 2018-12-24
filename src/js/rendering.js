@@ -14,6 +14,7 @@ const images = [
 
 let cardHTML = '';
 
+// Create all game cards
 images.forEach(img => {
   cardHTML += `
     <div class="memory-card" data-card="${img}">
@@ -23,4 +24,5 @@ images.forEach(img => {
   `
 });
 
+// Adds the elements created in the HTML page
 cardBoard.innerHTML = cardHTML + cardHTML;

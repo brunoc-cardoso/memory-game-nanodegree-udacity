@@ -4,11 +4,11 @@ const cards = document.querySelectorAll('.memory-card');
 let firstCard, secondCard;
 let lockCard = false;
 
+// Turn the cards
 function flipCard() {
   if (lockCard) return false;
 
   this.classList.add("flip");
-
 
   if (!firstCard) {
     firstCard = this;
@@ -19,6 +19,7 @@ function flipCard() {
   checkForMatch();
 }
 
+// Checks if the selected cards are equal
 function checkForMatch() {
   let isMath = firstCard.dataset.card === secondCard.dataset.card;
 
@@ -29,6 +30,8 @@ function checkForMatch() {
   }
 }
 
+// Alter style
+// Adds or removes the letter border according to the status
 function addBorderCorrect() {
   lockCard = true;
   firstCard.classList.add("borderCorrect");
@@ -47,6 +50,7 @@ function removeBorderError() {
   secondCard.classList.remove("borderError");
 }
 
+// Disables the cards that are already turned
 function disableCards() {
   lockCard = true;
 
@@ -62,6 +66,7 @@ function disableCards() {
   }, 1000);
 }
 
+// Shuffles the cards as soon as the page loads
 (function shuffle() {
   cards.forEach(card => {
     let rand = Math.floor(Math.random() * 12);
@@ -69,20 +74,20 @@ function disableCards() {
   });
 })();
 
+// Reset the cards
 function resetCards(isMath = false) {
   if (isMath) {
     addBorderCorrect();
     firstCard.removeEventListener('click', flipCard);  
     secondCard.removeEventListener('click', flipCard);  
   } 
-
   [firstCard, secondCard, lockCard] = [null, null, false];
 }
 
+// Adds movement on all cards
 cards.forEach(card => card.addEventListener('click', flipCard));
 
-// 
-
+// Reload the page to restart the game
 function reloadPage() {
   window.location.reload();
 }

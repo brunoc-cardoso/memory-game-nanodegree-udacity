@@ -9,11 +9,6 @@ body {
   display: flex;
 }
 
-.link {
-  text-decoration: none;
-  color: white;
-}
-
 .container {
   margin: auto;
 }
@@ -69,7 +64,6 @@ body {
 }
 
 .back-face {
-  /* background-color: rgb(75, 89, 99); */
   background-color: rgb(56, 73, 221);
 }
 
