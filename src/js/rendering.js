@@ -18,8 +18,8 @@ let cardHTML = '';
 images.forEach(img => {
   cardHTML += `
     <div class="memory-card" data-card="${img}">
-      <img class="front-face" src="../../resource/images/${img}">
-      <img class="back-face" src="../../resource/images/puzzle.svg">
+      <img class="front-face" src="../resource/images/${img}">
+      <img class="back-face" src="../resource/images/puzzle.svg">
     </div>
   `
 });
