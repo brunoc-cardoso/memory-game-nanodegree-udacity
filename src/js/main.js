@@ -29,11 +29,11 @@ function showAmountMovements() {
 
 // Changes the status of movement stars
 function alterStarStatus() {
-  if (movementsCounter > 20 && movementsCounter <= 28) {
+  if (movementsCounter > 20 && movementsCounter <= 30) {
     star3.classList.remove("fa");
     star3.classList.add("far");
     starCount = 2;
-  } else if (movementsCounter > 28) {
+  } else if (movementsCounter > 31) {
     star2.classList.remove("fa");
     star2.classList.add("far");
     starCount = 1;
@@ -206,7 +206,6 @@ function openModalEndGame() {
           </div>`;
   
     movementsDiv.innerHTML = modalTag;
-
     
     // opens the modal in the document
     alterStarStatus();
