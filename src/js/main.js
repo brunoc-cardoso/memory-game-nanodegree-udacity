@@ -65,7 +65,6 @@ function alterStarStatusModal(starCount) {
   }
 }
 
-
 // Turn the cards
 function flipCard() {
   if (lockCard) return false;
@@ -75,9 +74,11 @@ function flipCard() {
 
   if (!firstCard) {
     firstCard = this;
+
+    firstCard.removeEventListener('click', flipCard);
     return false;
   }
-
+  
   secondCard = this;
   checkForMatch();
 }
@@ -88,6 +89,8 @@ function checkForMatch() {
 
   if (!isMath) {
     disableCards();
+
+    firstCard.addEventListener('click', flipCard);
   } else {
     resetCards(isMath);
   }
@@ -148,7 +151,7 @@ function resetCards(isMath = false) {
     firstCard.removeEventListener('click', flipCard);
     secondCard.removeEventListener('click', flipCard);
 
-    if (cardCounting === 2) openModalEndGame();
+    if (cardCounting === 8) openModalEndGame();
 
   }
   [firstCard, secondCard, lockCard] = [null, null, false];
