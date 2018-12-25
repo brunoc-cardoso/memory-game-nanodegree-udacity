@@ -2,14 +2,43 @@
 
 const cards = document.querySelectorAll('.memory-card');
 let firstCard, secondCard;
+let star = document.body.querySelector('#star1');
+let star2 = document.body.querySelector('#star2');
+let star3 = document.body.querySelector('#star3');
 let lockCard = false;
+
+let movementsDiv = document.body.querySelector('#movements');
+let movementsCounter = 0;
+let counterTag = '';
+
+// Counts and updates the number of movements
+function showAmountMovements() {
+  movementsCounter++;
+  counterTag = `
+    <span>Movements: ${movementsCounter}</span>
+  `;
+  movementsDiv.innerHTML = counterTag;
+  alterStarStatus();
+}
+
+// Changes the status of movement stars
+function alterStarStatus() {
+  if (movementsCounter > 20 && movementsCounter <= 28) {
+    star3.classList.remove("fa");
+    star3.classList.add("far");
+  } else if (movementsCounter > 28) {
+    star2.classList.remove("fa");
+    star2.classList.add("far");
+  }
+}
 
 // Turn the cards
 function flipCard() {
   if (lockCard) return false;
 
   this.classList.add("flip");
-
+  showAmountMovements();
+  
   if (!firstCard) {
     firstCard = this;
     return false;
@@ -91,3 +120,4 @@ cards.forEach(card => card.addEventListener('click', flipCard));
 function reloadPage() {
   window.location.reload();
 }
+
