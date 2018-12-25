@@ -1,15 +1,21 @@
 'user strict'
 
 const cards = document.querySelectorAll('.memory-card');
+const star = document.body.querySelector('.star1');
+const star2 = document.body.querySelector('.star2');
+const star3 = document.body.querySelector('.star3');
+const modalDiv = document.body.querySelector('#modalFinalization');
+const movementsDiv = document.body.querySelector('#movements');
+
 let firstCard, secondCard;
-let star = document.body.querySelector('#star1');
-let star2 = document.body.querySelector('#star2');
-let star3 = document.body.querySelector('#star3');
 let lockCard = false;
 
-let movementsDiv = document.body.querySelector('#movements');
+let timeSpentCounter = 0;
 let movementsCounter = 0;
+let cardCounting = 0;
 let counterTag = '';
+let modalTag = '';
+let starCount = 3;
 
 // Counts and updates the number of movements
 function showAmountMovements() {
@@ -26,11 +32,39 @@ function alterStarStatus() {
   if (movementsCounter > 20 && movementsCounter <= 28) {
     star3.classList.remove("fa");
     star3.classList.add("far");
+    starCount = 2;
   } else if (movementsCounter > 28) {
     star2.classList.remove("fa");
     star2.classList.add("far");
+    starCount = 1;
   }
 }
+
+// Change the stars of the modal
+function alterStarStatusModal(starCount) {
+  let code;
+
+  if (starCount === 1) {
+    return code = `
+    <i class="fa fa-star star1" aria-hidden="true"></i>
+    <i class="far fa-star star2" aria-hidden="true"></i>
+    <i class="far fa-star star3" aria-hidden="true"></i>
+    `;
+  } else if (starCount === 2) {
+    return code = `
+    <i class="fa fa-star star1" aria-hidden="true"></i>
+    <i class="fa fa-star star2" aria-hidden="true"></i>
+    <i class="far fa-star star3" aria-hidden="true"></i>
+    `;
+  } else {
+    return code = `
+      <i class="fa fa-star star1" aria-hidden="true"></i>
+      <i class="fa fa-star star2" aria-hidden="true"></i>
+      <i class="fa fa-star star3" aria-hidden="true"></i>
+      `;
+  }
+}
+
 
 // Turn the cards
 function flipCard() {
@@ -38,7 +72,7 @@ function flipCard() {
 
   this.classList.add("flip");
   showAmountMovements();
-  
+
   if (!firstCard) {
     firstCard = this;
     return false;
@@ -103,13 +137,20 @@ function disableCards() {
   });
 })();
 
+// 
+
 // Reset the cards
 function resetCards(isMath = false) {
   if (isMath) {
     addBorderCorrect();
-    firstCard.removeEventListener('click', flipCard);  
-    secondCard.removeEventListener('click', flipCard);  
-  } 
+    cardCounting++;
+
+    firstCard.removeEventListener('click', flipCard);
+    secondCard.removeEventListener('click', flipCard);
+
+    if (cardCounting === 2) openModalEndGame();
+
+  }
   [firstCard, secondCard, lockCard] = [null, null, false];
 }
 
@@ -121,3 +162,57 @@ function reloadPage() {
   window.location.reload();
 }
 
+// Open Modal
+function openModalEndGame() {
+  $(document).ready(function () {
+    timeSpentCounter = showTime();
+  });
+
+  let codeIconStar = alterStarStatusModal(starCount);
+
+  setTimeout(function () {
+    modalTag = `<!-- Modal end game -->
+        <div class="modal fade" id="modalEndGame">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+        
+              <!-- Modal Header -->
+              <div class="modal-header">
+                <h4 class="modal-title">Congratulations!!!</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+        
+              <!-- Modal body -->
+              <div class="modal-body">
+                <div class="row">
+                  <p class="ml-3">Congratulations, you have completed the memory game.</p>
+                </div>
+                <div class="row">
+                  <p class="col-3">
+                    ${codeIconStar}
+                  </p>
+                  <p id="timeSpent" class="col-5">Time spent: ${timeSpentCounter}</p>
+                  <p id="spendingMovements" class="col-4">spending movements: ${movementsCounter}</p>
+                </div>
+              </div>
+        
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="reloadPage()">New Game</button>
+              </div>
+        
+            </div>
+          </div>
+          </div>`;
+  
+    movementsDiv.innerHTML = modalTag;
+
+    
+    // opens the modal in the document
+    alterStarStatus();
+    $(document).ready(function () {
+      alterStarStatus();
+      $("#modalEndGame").modal();
+    });
+  }, 500);
+}

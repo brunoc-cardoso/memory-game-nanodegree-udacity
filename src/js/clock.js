@@ -13,8 +13,14 @@ let control = null;
 })();
 
 // Stop the counter
-function stop() {
-	clearInterval(control);
+function stopTime() {
+  clearInterval(control);
+  console.log('tempo parado');
+}
+
+function showTime() {
+  let t = minutes + ' : ' + seconds + ' : '  + thousandths;
+  return t;
 }
 
 // Increments the minutes, seconds and milliseconds
